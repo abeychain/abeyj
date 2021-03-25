@@ -1,5 +1,6 @@
 package org.abeyj;
 
+import org.abeyj.abi.datatypes.Address;
 import org.abeyj.common.AddressConstant;
 import org.abeyj.common.Constant;
 import org.abeyj.crypto.Credentials;
@@ -529,29 +530,32 @@ public class AbeyjRequest {
 
 
     public static void main(String[] args) {
-        String service = "http service";
-        Abeyj web3j = Abeyj.build(new HttpService(service));
-        Credentials credentials = Credentials.create("User privateKey");
+        Abeyj abeyj = Abeyj.build(new HttpService("http://18.138.171.105:8545"));
+        Credentials credentials = Credentials.create("229ca04fb83ec698296037c7d2b04a731905df53b96c260555cbeed9e4c64036");
         String from_address = credentials.getAddress();
         BigInteger nonce = BigInteger.ZERO;
         try {
-            AbeyGetTransactionCount ethGetTransactionCount = web3j.abeyGetTransactionCount(from_address, DefaultBlockParameterName.PENDING).send();
+            AbeyGetTransactionCount ethGetTransactionCount = abeyj.abeyGetTransactionCount(from_address, DefaultBlockParameterName.PENDING).send();
             nonce = ethGetTransactionCount.getTransactionCount();
         } catch (IOException e) {
             e.printStackTrace();
         }
         RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, new BigInteger("150000000000"),
-                new BigInteger("21000"), "toaddress",new BigInteger("10000000"));
+                new BigInteger("60000"), "ABEYDhCp7be7fXUrpBTcAcZDiwYPZXT26yqSK",new BigInteger("10000000"));
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, 178, credentials);
         String hexValue = Numeric.toHexString(signedMessage);
         org.abeyj.protocol.core.methods.response.AbeySendTransaction abeySendTransaction = null;
         try {
-            abeySendTransaction = web3j.abeySendRawTransaction(hexValue).sendAsync().get();
+            abeySendTransaction = abeyj.abeySendRawTransaction(hexValue).sendAsync().get();
             String transactionHash = abeySendTransaction.getTransactionHash();
             System.out.println(transactionHash);
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
+        Address address = new Address("ABEYDhCp7be7fXUrpBTcAcZDiwYPZXT26yqSK");
+
     }
 
 }

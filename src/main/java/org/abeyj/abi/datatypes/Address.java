@@ -12,6 +12,7 @@
  */
 package org.abeyj.abi.datatypes;
 
+import org.abeyj.address.AddressHelper;
 import org.abeyj.utils.Numeric;
 
 import java.math.BigInteger;
@@ -40,7 +41,7 @@ public class Address implements Type<String> {
     }
 
     public Address(String hexValue) {
-        this(DEFAULT_LENGTH, hexValue);
+        this(DEFAULT_LENGTH, AddressHelper.changeAddressToHex(hexValue));
     }
 
     public Address(int bitSize, String hexValue) {
