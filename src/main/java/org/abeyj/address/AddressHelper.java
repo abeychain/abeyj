@@ -28,7 +28,7 @@ public class AddressHelper {
 
     public static String changeAddressToHex(String address) {
         if (address.startsWith(base58Top)) {
-            return toHexString(address).substring(6);
+            return "0x" + toHexString(address).substring(6);
         }
         return address;
     }
@@ -42,10 +42,10 @@ public class AddressHelper {
     }
 
     /**
-     * 对地址执行Base58编码
+     * encode Base58
      *
-     * @param addressBytes 地址字节数组
-     * @return 地址
+     * @param addressBytes address bytes
+     * @return address
      */
     public static String addressBytesEncode58Check(byte[] addressBytes) {
         byte[] hash0 = sha3(addressBytes);
@@ -57,10 +57,10 @@ public class AddressHelper {
     }
 
     /**
-     * 地址Base58解码成字节数组
+     * address to base58
      *
-     * @param addressBase58 地址Base58格式
-     * @return 字节数组
+     * @param addressBase58 addressBase58
+     * @return bytes
      */
     public static byte[] decodeFromBase58Check(String addressBase58) throws Exception {
         byte[] address = decode58Check(addressBase58);
@@ -85,10 +85,10 @@ public class AddressHelper {
     }
 
     /**
-     * Base58解码
+     * base58 encode
      *
-     * @param input Base58字符串
-     * @return 字节数组
+     * @param input base58 string
+     * @return bytes
      */
     private static byte[] decode58Check(String input) throws Exception {
         byte[] decodeCheck = Base58.decode(input);
@@ -110,10 +110,10 @@ public class AddressHelper {
     }
 
     /**
-     * 地址校验
+     * address verify
      *
-     * @param address 地址Base58 解码后的字节数组
-     * @return 校验结果
+     * @param address 地址Base58 decode bytes
+     * @return resultß
      */
     private static boolean addressValid(byte[] address) {
         if (address.length != ADDRESS_SIZE) {
