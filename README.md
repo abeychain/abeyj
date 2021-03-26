@@ -7,7 +7,7 @@
 <dependency>
     <groupId>com.abey</groupId>
     <artifactId>abeyj</artifactId>
-    <version>1.0.0.0</version>
+    <version>1.0.0.1</version>
 </dependency>
 
 ```
