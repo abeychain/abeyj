@@ -1,31 +1,26 @@
 package org.abeyj;
 
-import org.abeyj.abi.datatypes.Address;
 import org.abeyj.common.AddressConstant;
 import org.abeyj.common.Constant;
-import org.abeyj.crypto.Credentials;
-import org.abeyj.crypto.RawTransaction;
-import org.abeyj.crypto.TransactionEncoder;
-import org.abeyj.protocol.Abeyj;
-import org.abeyj.protocol.core.methods.response.AbeyGetTransactionCount;
-import org.abeyj.response.*;
-import org.abeyj.response.AbeySnailBlockNumber;
-import org.abeyj.response.Reward.ChainRewardContent;
-import org.abeyj.response.Reward.RewardInfo;
-import org.abeyj.response.Reward.SARewardInfos;
-import org.abeyj.response.committee.CommitteeInfo;
-import org.abeyj.response.fast.FastBlock;
-import org.abeyj.response.snail.*;
-import org.abeyj.response.staking.AllStakingAccount;
-import org.abeyj.response.staking.StakingAccountInfo;
-import org.abeyj.utils.Numeric;
-import org.apache.commons.lang3.StringUtils;
 import org.abeyj.protocol.AbeyjService;
 import org.abeyj.protocol.core.DefaultBlockParameter;
 import org.abeyj.protocol.core.DefaultBlockParameterName;
 import org.abeyj.protocol.core.Request;
 import org.abeyj.protocol.core.methods.response.AbeyGetBalance;
 import org.abeyj.protocol.http.HttpService;
+import org.abeyj.response.*;
+import org.abeyj.response.Reward.ChainRewardContent;
+import org.abeyj.response.Reward.RewardInfo;
+import org.abeyj.response.Reward.SARewardInfos;
+import org.abeyj.response.committee.CommitteeInfo;
+import org.abeyj.response.fast.FastBlock;
+import org.abeyj.response.snail.BalanceChange;
+import org.abeyj.response.snail.FastBalanceChange;
+import org.abeyj.response.snail.SnailBlock;
+import org.abeyj.response.snail.SnailRewardContenet;
+import org.abeyj.response.staking.AllStakingAccount;
+import org.abeyj.response.staking.StakingAccountInfo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -527,35 +522,4 @@ public class AbeyjRequest {
         }
         return fastBlock;
     }
-
-
-    public static void main(String[] args) {
-        Abeyj abeyj = Abeyj.build(new HttpService("http://18.138.171.105:8545"));
-        Credentials credentials = Credentials.create("229ca04fb83ec698296037c7d2b04a731905df53b96c260555cbeed9e4c64036");
-        String from_address = credentials.getAddress();
-        BigInteger nonce = BigInteger.ZERO;
-        try {
-            AbeyGetTransactionCount ethGetTransactionCount = abeyj.abeyGetTransactionCount(from_address, DefaultBlockParameterName.PENDING).send();
-            nonce = ethGetTransactionCount.getTransactionCount();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, new BigInteger("150000000000"),
-                new BigInteger("60000"), "ABEYDhCp7be7fXUrpBTcAcZDiwYPZXT26yqSK",new BigInteger("10000000"));
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, 178, credentials);
-        String hexValue = Numeric.toHexString(signedMessage);
-        org.abeyj.protocol.core.methods.response.AbeySendTransaction abeySendTransaction = null;
-        try {
-            abeySendTransaction = abeyj.abeySendRawTransaction(hexValue).sendAsync().get();
-            String transactionHash = abeySendTransaction.getTransactionHash();
-            System.out.println(transactionHash);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        Address address = new Address("ABEYDhCp7be7fXUrpBTcAcZDiwYPZXT26yqSK");
-
-    }
-
 }

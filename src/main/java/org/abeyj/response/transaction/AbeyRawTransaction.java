@@ -1,5 +1,6 @@
 package org.abeyj.response.transaction;
 
+import org.abeyj.address.AddressHelper;
 import org.abeyj.utils.Numeric;
 
 import java.math.BigInteger;
@@ -139,7 +140,7 @@ public class AbeyRawTransaction {
     }
 
     public String getTo() {
-        return to;
+        return AddressHelper.changeAddressToHex(to);
     }
 
     public BigInteger getValue() {
@@ -155,6 +156,6 @@ public class AbeyRawTransaction {
     }
 
     public String getPayment() {
-        return payment;
+        return AddressHelper.changeAddressToHex(payment);
     }
 }
